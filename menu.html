@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منيو السلطان - نظام المربعات</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            direction: rtl;
+            background: url("img/a7med.jpg") no-repeat center center fixed;
+            background-size: cover;
+            color: #ffd700;
+            overflow-x: hidden;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.9);
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-shadow: 0px 0px 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* حاوية المربعات (الأقسام) */
+        .tabs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .tab-box {
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid #ffd700;
+            border-radius: 12px;
+            padding: 15px 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            font-size: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-box i {
+            font-size: 24px;
+        }
+
+        .tab-box:hover, .tab-box.active {
+            background: #ffd700;
+            color: #000;
+        }
+
+        /* حاوية عرض الأصناف */
+        .content-container {
+            max-width: 600px;
+            margin: auto;
+            min-height: 200px;
+        }
+
+        .category-content {
+            display: none; /* مخفي افتراضياً */
+            animation: fadeIn 0.5s ease;
+        }
+
+        .category-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border-right: 4px solid #ffd700;
+            font-size: 20px;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #fff;
+            background: rgba(255, 215, 0, 0.2);
+            padding: 5px 12px;
+            border-radius: 8px;
+        }
+        
+/* 1. تعديل حاوية اللوجو لتقريب المسافة من الأسفل */
+.logo-container {
+    text-align: center;
+    margin-top: 10px;    /* المسافة من الأعلى */
+    margin-bottom: 5px;  /* قللنا المسافة جداً هنا لتقريب المربعات */
+}
+
+/* 2. تعديل حاوية المربعات لضمان عدم وجود مسافات علوية كبيرة */
+.tabs-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    max-width: 800px;
+    margin: 0 auto 30px; /* الـ 0 الأول يضمن عدم وجود مسافة فوق المربعات */
+}
+
+/* 3. تقليل حجم اللوجو قليلاً (اختياري) ليظهر التصميم متناسق */
+.logo-container img {
+    max-width: 300px; /* الـ 500 كانت كبيرة جداً وقد تسبب مساحات فارغة وهمية */
+    height: auto;
+    filter: drop-shadow(0px 0px 15px rgba(255, 215, 0, 0.6));
+}
+        /* أزرار التحكم العلوية */
+        .top-btns {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            padding: 8px 15px;
+            border: 1px solid #ffd700;
+            border-radius: 8px;
+            background: transparent;
+            color: #ffd700;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            font-size: 16px;
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<div class="overlay">
+    <div class="top-btns">
+        <button onclick="goLogin()" class="back-btn">🔐 دخول</button>
+        <button onclick="goLogin2()" class="back-btn">⌛ الاستهلاك</button>
+    </div>
+
+  <div class="logo-container">
+    <!-- تأكد أن الصورة موجودة داخل مجلد img واسمها logo.png -->
+    <img src="img/logo.png" alt="لوجو السلطان">
+</div>
+    <!-- مربعات الأقسام -->
+    <div class="tabs-container">
+        <div class="tab-box active" onclick="openCategory(event, 'syrian')">
+            <span>🌯</span>
+            <span>سوري</span>
+        </div>
+        <div class="tab-box" onclick="openCategory(event, 'french')">
+            <span>🥖</span>
+            <span>فرنساوي</span>
+        </div>
+        <div class="tab-box" onclick="openCategory(event, 'crepe')">
+            <span>🥞</span>
+            <span>كريب</span>
+        </div>
+        <div class="tab-box" onclick="openCategory(event, 'waffle')">
+            <span>🧇</span>
+            <span>وافل</span>
+        </div>
+        <div class="tab-box" onclick="openCategory(event, 'hot')">
+            <span>☕</span>
+            <span>ساخن</span>
+        </div>
+        <div class="tab-box" onclick="openCategory(event, 'cold')">
+            <span>🍹</span>
+            <span>بارد</span>
+        </div>
+    </div>
+
+    <!-- محتوى المنيو -->
+    <div class="content-container">
+        
+        <!-- قسم السوري -->
+        <div id="syrian" class="category-content active">
+            <div class="item"><span>شاورما عربي دبل</span> <span class="price">90ج</span></div>
+            <div class="item"><span>فتة شاورما عائلي</span> <span class="price">130ج</span></div>
+            <div class="item"><span>صاروخ دجاج</span> <span class="price">75ج</span></div>
+        </div>
+
+        <!-- قسم الفرنساوي -->
+        <div id="french" class="category-content">
+            <div class="item"><span>كوردون بلو باجيت</span> <span class="price">95ج</span></div>
+            <div class="item"><span>زنجر حار نار</span> <span class="price">85ج</span></div>
+            <div class="item"><span>شيش طاووق</span> <span class="price">90ج</span></div>
+        </div>
+
+        <!-- قسم الكريب -->
+        <div id="crepe" class="category-content">
+            <div class="item"><span>كريب ميكس لحوم</span> <span class="price">100ج</span></div>
+            <div class="item"><span>كريب زنجر</span> <span class="price">85ج</span></div>
+            <div class="item"><span>كريب نوتيلا</span> <span class="price">55ج</span></div>
+        </div>
+
+        <!-- قسم الوافل -->
+        <div id="waffle" class="category-content">
+            <div class="item"><span>وافل نوتيلا وموز</span> <span class="price">60ج</span></div>
+            <div class="item"><span>وافل ميكس شوكليت</span> <span class="price">70ج</span></div>
+        </div>
+
+        <!-- قسم الساخن -->
+        <div id="hot" class="category-content">
+            <div class="item"><span>قهوة اسبريسو</span> <span class="price">30ج</span></div>
+            <div class="item"><span>لاتيه كراميل</span> <span class="price">50ج</span></div>
+            <div class="item"><span>سحلب ملكي</span> <span class="price">40ج</span></div>
+        </div>
+
+        <!-- قسم البارد -->
+        <div id="cold" class="category-content">
+            <div class="item"><span>ميلك شيك لوتس</span> <span class="price">65ج</span></div>
+            <div class="item"><span>موجيتو رمان</span> <span class="price">55ج</span></div>
+            <div class="item"><span>آيس كوفي</span> <span class="price">50ج</span></div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        © 2026 تم التطوير بواسطة <b>Ahmed Ashraf</b> <br>
+        📞 01019728653
+    </div>
+</div>
+
+<script>
+    function openCategory(evt, categoryName) {
+        // إخفاء كل المحتويات
+        const contents = document.querySelectorAll(".category-content");
+        contents.forEach(content => content.classList.remove("active"));
+
+        // إزالة حالة النشاط (Active) من كل المربعات
+        const tabs = document.querySelectorAll(".tab-box");
+        tabs.forEach(tab => tab.classList.remove("active"));
+
+        // إظهار القسم المطلوب وإضافة حالة النشاط للمربع المضغوط
+        document.getElementById(categoryName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+
+    function goLogin(){ window.location.href = "login.html"; }
+    function goLogin2(){ window.location.href = "status.html"; }
+</script>
+
+</body>
+</html>
